@@ -16,7 +16,7 @@ VALUES
 INSERT INTO Product 
 (product_Id, product_Name, description, brand, price, category, release_Date, stock_Quantity, product_Status, product_Available)
 VALUES
-(4, 'Dell XPS 15', 'High-performance laptop suitable for professionals', 'Dell', 1899.99, 'Computers', '2023-12-05', 0, 'Out of Stock', false);
+(4, 'Dell XPS 15', 'High-performance laptop suitable for professionals', 'Dell', 1899.99, 'Computers', '2023-12-05', 0, 'Out of Stock', true);
 
 INSERT INTO Product 
 (product_Id, product_Name, description, brand, price, category, release_Date, stock_Quantity, product_Status, product_Available)

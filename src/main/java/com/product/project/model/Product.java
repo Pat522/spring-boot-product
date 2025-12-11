@@ -25,7 +25,6 @@ public class Product
     private boolean productAvailable;
     private int stockQuantity;  
     private String productStatus;
-    //public boolean isProductAvailable();
     
   
 }

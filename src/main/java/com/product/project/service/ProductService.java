@@ -38,7 +38,11 @@ public Product getById(int id) {
         return repo.findById(id)
                    .orElseThrow(() -> new RuntimeException("Product not found"));
     }
+       
+      public List<Product> getAllProduct() {
+        return repo.findAll();
+    }
 
- 
+    
 
-}
+   }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 public class ProductController
@@ -83,13 +84,10 @@ public ResponseEntity<?> getProductStatus(@PathVariable int id) {
         Map<String, Object> map = new HashMap<>();
         map.put("productId", product.getProductId());
         map.put("productName", product.getProductName());
-        map.put("description", product.getDescription());
         map.put("brand", product.getBrand());
         map.put("category", product.getCategory());
         map.put("price", product.getPrice());
-        map.put("releaseDate", product.getReleaseDate());
-        map.put("stockQuantity", product.getStockQuantity());
-        map.put("status", product.getProductStatus());   
+        map.put("productStatus",product.getProductStatus());
         
          String status = product.isProductAvailable() && product.getStockQuantity() > 10 ? "Available": 
                             "Out of Stock";
@@ -101,5 +99,34 @@ public ResponseEntity<?> getProductStatus(@PathVariable int id) {
                 .body(Map.of("error", "Product Not Found", "productId", id));
     }
 }
+@GetMapping("/products/filter")
+public ResponseEntity<?> filterProducts(
+        @RequestParam(required = false) Boolean available
+) {
+    try {
+        List<Product> allProducts = service.getAllProduct();
+
+        List<Product> filteredProducts = allProducts.stream()
+                .filter(p -> {
+                    if (available != null && available) {
+                        return p.getStockQuantity() > 10;
+                    } else if (available != null && !available) {
+                        return p.getStockQuantity() <= 10;
+                    } else {
+                        return true;}
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(filteredProducts);
+    } catch (Exception e) {
+
+        Map<String, String> error = new HashMap<>();
+        error.put("message", "Error fetching product list");
+        error.put("error", e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+}
+
 
 }
